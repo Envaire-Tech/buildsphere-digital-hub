@@ -33,7 +33,7 @@ const MegaMenu = () => (
       {featuredProperties.map((prop) => (
         <Link key={prop.id} to={`/property/${prop.id}`} className="group block">
           <div className="relative h-40 rounded-xl overflow-hidden mb-4">
-            <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110" />
+            <img src={prop.img} alt={prop.title} className="w-full h-full object-cover transition-transform duration-700 ease-cinematic group-hover:scale-110" />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
           </div>
           <h4 className="font-heading font-semibold text-lg text-foreground mb-1">{prop.title}</h4>
@@ -70,13 +70,8 @@ const Navbar = () => {
       }`}
     >
       <div className="section-padding flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-            <Home size={20} className="text-primary" />
-          </div>
-          <span className="font-heading font-bold text-2xl tracking-tighter text-foreground">
-            BuildSphere
-          </span>
+        <Link to="/" className="flex items-center gap-3">
+          <img src="/suite-logo.png" alt="BuildSphere Logo" className="h-8 md:h-10 w-auto transition-transform duration-500 hover:scale-105" />
         </Link>
 
         {/* Desktop Nav */}
@@ -98,7 +93,7 @@ const Navbar = () => {
                 {item.hasMegaMenu && <ChevronDown size={14} className={`transition-transform duration-300 ${hoveredItem === item.label ? "rotate-180" : ""}`} />}
                 
                 {/* Animated Underline */}
-                <span className={`absolute -bottom-1 left-0 h-[2px] bg-primary transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                <span className={`absolute -bottom-1 left-0 h-[2px] bg-primary transition-all duration-500 ease-cinematic ${
                   location.pathname === item.href ? "w-full" : "w-0 group-hover:w-full"
                 }`} />
               </Link>

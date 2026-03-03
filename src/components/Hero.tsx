@@ -118,7 +118,7 @@ const Hero = () => {
           {/* Floating Search Controls */}
           <div className="lg:col-span-4 flex flex-col items-start lg:items-end">
             <motion.div 
-              className={`glass-card overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${searchExpanded ? 'w-full rounded-2xl p-8' : 'w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/10'}`}
+              className={`glass-card overflow-hidden transition-all duration-700 ease-cinematic ${searchExpanded ? 'w-full rounded-2xl p-8' : 'w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/10'}`}
               onClick={() => !searchExpanded && setSearchExpanded(true)}
               layout
             >

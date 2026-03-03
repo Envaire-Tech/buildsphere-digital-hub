@@ -34,7 +34,7 @@ const Properties = () => {
       <Navbar />
       
       {/* Dynamic Fake Map Background */}
-      <div className={`fixed inset-0 z-0 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] ${mapView ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}>
+      <div className={`fixed inset-0 z-0 transition-all duration-1000 ease-cinematic ${mapView ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}>
         <img 
           src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
           alt="Map" 
@@ -67,7 +67,7 @@ const Properties = () => {
         )}
       </div>
 
-      <main className="flex-1 relative z-10 pt-28 pb-12 px-6 lg:px-12 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 h-screen overflow-hidden">
+      <main className="flex-1 relative z-10 pt-28 pb-12 px-6 lg:px-12 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row gap-8 h-screen overflow-hidden">
         
         {/* Floating Filter Panel */}
         <motion.div 
@@ -97,7 +97,7 @@ const Properties = () => {
                   <button
                     key={c}
                     onClick={() => setCategory(c)}
-                    className={`text-left px-5 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                    className={`text-left px-5 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-500 ease-cinematic ${
                       category === c
                         ? "bg-foreground text-background shadow-xl scale-100"
                         : "hover:bg-white/5 text-foreground/70 scale-[0.98] hover:scale-100 border border-transparent hover:border-white/5"
@@ -137,7 +137,7 @@ const Properties = () => {
 
         {/* Scrollable Properties List */}
         <div className="flex-1 h-full overflow-y-auto pb-32 pr-2 lg:pr-6" style={{ scrollbarWidth: 'none' }}>
-          <div className={`grid gap-6 ${mapView ? 'grid-cols-1 xl:grid-cols-2 max-w-5xl ml-auto' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+          <div className={`grid gap-6 ${mapView ? 'grid-cols-1 xl:grid-cols-3 max-w-5xl ml-auto' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
             <AnimatePresence mode="popLayout">
               {filtered.map((p, i) => (
                 <motion.div

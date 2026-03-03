@@ -22,32 +22,29 @@ const footerLinks = {
 };
 
 const Footer = () => (
-  <footer className="gradient-charcoal text-primary-foreground">
+  <footer className="gradient-charcoal text-foreground">
     <div className="section-padding py-16 md:py-20">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
-          <div className="flex items-center gap-2.5 mb-4">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-              <Home size={18} className="text-primary-foreground" />
-            </div>
-            <span className="font-heading font-bold text-xl">BuildSphere</span>
-          </div>
-          <p className="text-primary-foreground/50 text-sm leading-relaxed max-w-xs">
+          <Link to="/" className="inline-block mb-6">
+            <img src="/suite-logo.png" alt="BuildSphere Logo" className="h-10 md:h-12 w-auto transition-transform duration-500 hover:scale-105" />
+          </Link>
+          <p className="text-foreground/60 text-sm leading-relaxed max-w-xs font-light tracking-wide">
             Premium real estate platform helping you find the perfect home to buy or rent in prime locations.
           </p>
         </div>
 
         {Object.entries(footerLinks).map(([title, links]) => (
           <div key={title}>
-            <h4 className="font-heading font-semibold text-sm uppercase tracking-wider mb-4 text-primary-foreground/70">
+            <h4 className="font-heading font-bold text-xs uppercase tracking-[0.2em] mb-6 text-foreground/80">
               {title}
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {links.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors"
+                    className="text-sm text-foreground/50 hover:text-primary transition-colors hover:translate-x-1 inline-block duration-300"
                   >
                     {link.label}
                   </Link>
@@ -58,13 +55,13 @@ const Footer = () => (
         ))}
       </div>
 
-      <div className="mt-16 pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-primary-foreground/30">
+      <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p className="text-xs text-foreground/40 tracking-wider">
           © {new Date().getFullYear()} BuildSphere. All rights reserved.
         </p>
-        <div className="flex gap-6 text-xs text-primary-foreground/30">
-          <span>Privacy Policy</span>
-          <span>Terms of Service</span>
+        <div className="flex gap-8 text-xs text-foreground/40 tracking-wider">
+          <Link to="#" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+          <Link to="#" className="hover:text-foreground transition-colors">Terms of Service</Link>
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ const FloorPlan = ({ property }: { property: Property }) => {
         </div>
       </div>
 
-      <div className={`relative rounded-3xl overflow-hidden transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] bg-card/30 border border-white/5 ${zoom ? "h-[700px]" : "h-[450px]"}`}>
+      <div className={`relative rounded-3xl overflow-hidden transition-all duration-1000 ease-cinematic bg-card/30 border border-white/5 ${zoom ? "h-[700px]" : "h-[450px]"}`}>
         <div className="absolute inset-0 flex items-center justify-center p-8">
           <AnimatePresence mode="wait">
             <motion.svg 
@@ -78,7 +78,7 @@ const FloorPlan = ({ property }: { property: Property }) => {
                       fill={isHovered ? "hsl(var(--primary) / 0.15)" : "hsl(var(--primary) / 0.05)"}
                       stroke={isHovered ? "hsl(var(--primary))" : "hsl(var(--primary) / 0.3)"}
                       strokeWidth={isHovered ? 2 : 1}
-                      className="transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                      className="transition-all duration-500 ease-cinematic"
                     />
 
                     <text

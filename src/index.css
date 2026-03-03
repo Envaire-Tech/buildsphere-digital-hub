@@ -102,7 +102,7 @@
   }
 
   .property-card {
-    @apply rounded-xl overflow-hidden border border-white/5 bg-card/80 backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)];
+    @apply rounded-xl overflow-hidden border border-white/5 bg-card/80 backdrop-blur-sm transition-all duration-500 ease-cinematic;
   }
   .property-card:hover {
     transform: translateY(-8px) scale(1.02);
