@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
@@ -25,14 +26,16 @@ const Dashboard = () => {
   const savedProperties = properties.slice(0, 3);
   const recentViews = properties.slice(3, 5);
 
+  const [activeTab, setActiveTab] = useState("Profile & Identity");
+
   const sidebarLinks = [
-    { icon: <User size={18} />, label: "Profile & Identity", active: true },
-    { icon: <Heart size={18} />, label: "Saved Collections", active: false },
-    { icon: <Clock size={18} />, label: "Viewing History", active: false },
-    { icon: <BuildingIcon size={18} />, label: "My Holdings", active: false },
-    { icon: <Bell size={18} />, label: "Alerts & Preferences", active: false },
-    { icon: <CreditCard size={18} />, label: "Financial Profiles", active: false },
-    { icon: <Settings size={18} />, label: "Account Settings", active: false },
+    { icon: <User size={18} />, label: "Profile & Identity" },
+    { icon: <Heart size={18} />, label: "Saved Collections" },
+    { icon: <Clock size={18} />, label: "Viewing History" },
+    { icon: <BuildingIcon size={18} />, label: "My Holdings" },
+    { icon: <Bell size={18} />, label: "Alerts & Preferences" },
+    { icon: <CreditCard size={18} />, label: "Financial Profiles" },
+    { icon: <Settings size={18} />, label: "Account Settings" },
   ];
 
   return (
@@ -85,13 +88,14 @@ const Dashboard = () => {
                 {sidebarLinks.map((link) => (
                   <button 
                     key={link.label}
+                    onClick={() => setActiveTab(link.label)}
                     className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 ${
-                      link.active 
+                      activeTab === link.label 
                       ? "bg-foreground text-background shadow-lg scale-100" 
                       : "text-foreground/60 hover:text-foreground hover:bg-white/5 scale-[0.98] hover:scale-100"
                     }`}
                   >
-                    <span className={link.active ? "text-background" : "text-foreground/40"}>{link.icon}</span>
+                    <span className={activeTab === link.label ? "text-background" : "text-foreground/40"}>{link.icon}</span>
                     {link.label}
                   </button>
                 ))}
@@ -100,75 +104,105 @@ const Dashboard = () => {
 
             {/* Dashboard Content */}
             <div className="space-y-16">
-              
-              {/* Overview Cards */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
-              >
-                {[
-                  { label: "Saved Properties", value: "12", icon: <Heart size={20} /> },
-                  { label: "Active Viewings", value: "3", icon: <Clock size={20} /> },
-                  { label: "Messages", value: "5", icon: <Bell size={20} /> },
-                ].map((stat, i) => (
-                  <div key={stat.label} className="glass-card rounded-3xl p-8 border-none bg-card/40 hover:bg-card/60 transition-colors flex items-start justify-between">
-                    <div>
-                      <div className="text-4xl font-heading font-bold text-foreground mb-2">{stat.value}</div>
-                      <div className="text-xs tracking-[0.1em] uppercase font-bold text-foreground/50">{stat.label}</div>
-                    </div>
-                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary">
-                      {stat.icon}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Saved Collections */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-sm tracking-[0.2em] uppercase font-bold text-primary flex items-center gap-4">
-                    <span className="w-8 h-[1px] bg-primary"></span>
-                    Saved Collections
-                  </h2>
-                  <Link to="/properties" className="text-xs font-bold tracking-[0.1em] uppercase text-foreground/60 hover:text-foreground">View All</Link>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {savedProperties.map((p, i) => (
-                    <PropertyCard key={p.id} property={p} className="h-full flex flex-col glass-card border-none bg-card/40 hover:bg-card/60" imageClassName="aspect-video rounded-t-2xl" />
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Recent Activity */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.5 }}>
-                <h2 className="text-sm tracking-[0.2em] uppercase font-bold text-primary mb-8 flex items-center gap-4">
-                  <span className="w-8 h-[1px] bg-primary"></span>
-                  Recent Activity
-                </h2>
-                
-                <div className="glass-card rounded-[2rem] p-2 overflow-hidden border border-white/5 bg-card/40">
-                  {recentViews.map((p, i) => (
-                    <div key={p.id} className={`flex items-center gap-6 p-4 rounded-xl hover:bg-white/5 transition-colors cursor-pointer ${i !== 0 ? 'border-t border-white/5' : ''}`}>
-                      <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden">
-                        <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-heading font-bold text-lg text-foreground mb-1">{p.title}</h3>
-                        <div className="flex items-center gap-2 text-sm text-foreground/50">
-                          <MapPin size={14} />
-                          <span>{p.address}, {p.city}</span>
+              <AnimatePresence mode="wait">
+                {activeTab === "Profile & Identity" && (
+                  <motion.div
+                    key="profile"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4 }}
+                    className="space-y-16"
+                  >
+                    {/* Overview Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {[
+                        { label: "Saved Properties", value: "12", icon: <Heart size={20} /> },
+                        { label: "Active Viewings", value: "3", icon: <Clock size={20} /> },
+                        { label: "Messages", value: "5", icon: <Bell size={20} /> },
+                      ].map((stat, i) => (
+                        <div key={stat.label} className="glass-card rounded-3xl p-8 border-none bg-card/40 hover:bg-card/60 transition-colors flex items-start justify-between">
+                          <div>
+                            <div className="text-4xl font-heading font-bold text-foreground mb-2">{stat.value}</div>
+                            <div className="text-xs tracking-[0.1em] uppercase font-bold text-foreground/50">{stat.label}</div>
+                          </div>
+                          <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-primary">
+                            {stat.icon}
+                          </div>
                         </div>
+                      ))}
+                    </div>
+
+                    {/* Saved Collections */}
+                    <div>
+                      <div className="flex items-center justify-between mb-8">
+                        <h2 className="text-sm tracking-[0.2em] uppercase font-bold text-primary flex items-center gap-4">
+                          <span className="w-8 h-[1px] bg-primary"></span>
+                          Saved Collections
+                        </h2>
+                        <button onClick={() => setActiveTab("Saved Collections")} className="text-xs font-bold tracking-[0.1em] uppercase text-foreground/60 hover:text-foreground">View All</button>
                       </div>
-                      <div className="hidden md:block text-right">
-                        <div className="text-primary font-bold">{p.priceLabel}</div>
-                        <div className="text-xs text-foreground/40 mt-1">Viewed 2 days ago</div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {savedProperties.map((p, i) => (
+                          <PropertyCard key={p.id} property={p} className="h-full flex flex-col glass-card border-none bg-card/40 hover:bg-card/60" imageClassName="aspect-video rounded-t-2xl" />
+                        ))}
                       </div>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
 
+                    {/* Recent Activity */}
+                    <div>
+                      <div className="flex items-center justify-between mb-8">
+                        <h2 className="text-sm tracking-[0.2em] uppercase font-bold text-primary flex items-center gap-4">
+                          <span className="w-8 h-[1px] bg-primary"></span>
+                          Recent Activity
+                        </h2>
+                        <button onClick={() => setActiveTab("Viewing History")} className="text-xs font-bold tracking-[0.1em] uppercase text-foreground/60 hover:text-foreground">View History</button>
+                      </div>
+                      
+                      <div className="glass-card rounded-[2rem] p-2 overflow-hidden border border-white/5 bg-card/40">
+                        {recentViews.map((p, i) => (
+                          <div key={p.id} className={`flex items-center gap-6 p-4 rounded-xl hover:bg-white/5 transition-colors cursor-pointer ${i !== 0 ? 'border-t border-white/5' : ''}`}>
+                            <div className="w-24 h-24 shrink-0 rounded-lg overflow-hidden">
+                              <img src={p.images[0]} alt={p.title} className="w-full h-full object-cover" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-heading font-bold text-lg text-foreground mb-1">{p.title}</h3>
+                              <div className="flex items-center gap-2 text-sm text-foreground/50">
+                                <MapPin size={14} />
+                                <span>{p.address}, {p.city}</span>
+                              </div>
+                            </div>
+                            <div className="hidden md:block text-right">
+                              <div className="text-primary font-bold">{p.priceLabel}</div>
+                              <div className="text-xs text-foreground/40 mt-1">Viewed 2 days ago</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {activeTab !== "Profile & Identity" && (
+                  <motion.div
+                    key="placeholder"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4 }}
+                    className="flex flex-col items-center justify-center p-20 glass-card rounded-[2rem] text-center"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-primary mb-6">
+                      {sidebarLinks.find(l => l.label === activeTab)?.icon}
+                    </div>
+                    <h2 className="text-2xl font-heading font-bold text-foreground mb-2">{activeTab}</h2>
+                    <p className="text-muted-foreground max-w-sm">
+                      This section is currently under development. Content for {activeTab.toLowerCase()} will appear here soon.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 

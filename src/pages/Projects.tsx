@@ -58,8 +58,14 @@ const Projects = () => (
               className="grid lg:grid-cols-2 gap-10 items-center"
             >
               <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                <div className="rounded-xl overflow-hidden border border-border shadow-lg">
-                  <img src={p.image} alt={p.title} className="w-full aspect-[4/3] object-cover" loading="lazy" />
+                <div className="relative group rounded-[2rem] overflow-hidden border border-border shadow-2xl">
+                  <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay z-10 pointer-events-none" />
+                  <img src={p.image} alt={p.title} className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]" loading="lazy" />
+                  
+                  {/* Decorative Elements on hover */}
+                  <div className="absolute top-6 right-6 w-12 h-12 rounded-full backdrop-blur-md bg-black/20 border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-20 delay-100">
+                    <span className="text-white text-xl">↗</span>
+                  </div>
                 </div>
               </div>
               <div>
@@ -75,15 +81,21 @@ const Projects = () => (
                     <p className="text-sm text-foreground/80">{p.solution}</p>
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-4 mb-8">
                   <h4 className="text-xs font-heading font-semibold uppercase tracking-wider text-accent">Measurable Impact</h4>
-                  {p.impact.map((im) => (
-                    <div key={im} className="flex items-center gap-2 text-sm text-foreground">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-                      {im}
-                    </div>
-                  ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {p.impact.map((im) => (
+                      <div key={im} className="flex items-start gap-3 text-sm text-foreground bg-white/5 p-3 rounded-xl border border-white/5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
+                        <span className="leading-snug">{im}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+                
+                <button className="flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-foreground hover:text-accent transition-colors group">
+                  Discuss Similar Project <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </button>
               </div>
             </motion.div>
           ))}

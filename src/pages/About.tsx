@@ -58,6 +58,44 @@ const About = () => (
         </div>
       </section>
 
+      <section className="py-20 bg-background">
+        <div className="section-padding">
+          <h2 className="text-3xl font-heading font-bold text-foreground mb-4 text-center">Meet Our Leadership</h2>
+          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
+            The visionary minds behind BuildSphere, bringing together decades of real estate, technology, and design expertise.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              { name: "Eleanor Vance", role: "Chief Executive Officer", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" },
+              { name: "Marcus Thorne", role: "Head of Acquisitions", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600" },
+              { name: "Sarah Jenkins", role: "Chief Operating Officer", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=600" }
+            ].map((leader, i) => (
+              <motion.div
+                key={leader.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.6 }}
+                className="group select-none"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden rounded-3xl mb-4 border border-border shadow-lg">
+                  <img 
+                    src={leader.image} 
+                    alt={leader.name} 
+                    className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                    <p className="text-white text-sm font-medium tracking-wide">Connect on LinkedIn →</p>
+                  </div>
+                </div>
+                <h3 className="font-heading font-bold text-xl text-foreground text-center">{leader.name}</h3>
+                <p className="text-sm font-medium text-primary text-center tracking-wide uppercase mt-1">{leader.role}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CTASection />
     </main>
     <Footer />

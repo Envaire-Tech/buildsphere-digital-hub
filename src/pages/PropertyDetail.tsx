@@ -101,7 +101,7 @@ const PropertyDetail = () => {
         </div>
       </div>
 
-      <main className="relative z-20 bg-background -mt-16 rounded-t-[3rem] shadow-[0_-20px_40px_rgba(0,0,0,0.5)] border-t border-white/5 pt-20. pb-0">
+      <main className="relative z-20 bg-background -mt-16 rounded-t-[3rem] shadow-[0_-20px_40px_rgba(0,0,0,0.5)] border-t border-white/5 pt-20 pb-0">
         <div className="section-padding">
           {/* 2. Large Numeric Stats Presentation */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-32 border-b border-white/5 pb-20">
@@ -281,6 +281,23 @@ const PropertyDetail = () => {
             <button onClick={(e) => { e.stopPropagation(); nextImage(); }} className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/10 bg-black/40 flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all z-50">
               <ChevronRight size={32} />
             </button>
+
+            {/* Thumbnail Strip */}
+            <div 
+              className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-3 px-6 py-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-white/10 z-50 overflow-x-auto max-w-[90vw]"
+              style={{ scrollbarWidth: 'none' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {property.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImage(idx)}
+                  className={`relative w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 transition-all duration-300 ${activeImage === idx ? 'ring-2 ring-primary scale-110' : 'opacity-50 hover:opacity-100'}`}
+                >
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
