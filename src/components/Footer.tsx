@@ -1,50 +1,45 @@
 import { Link } from "react-router-dom";
+import { Home } from "lucide-react";
 
 const footerLinks = {
-  Solutions: [
-    { label: "Building Supervision", href: "/solutions" },
-    { label: "Construction Tracking", href: "/solutions" },
-    { label: "Property Booking", href: "/solutions" },
-    { label: "Enterprise SaaS", href: "/solutions" },
-    { label: "Analytics Suite", href: "/solutions" },
+  Properties: [
+    { label: "Houses for Sale", href: "/properties?category=Houses+for+Sale" },
+    { label: "Apartments for Rent", href: "/properties?category=Apartments+for+Rent" },
+    { label: "Luxury Homes", href: "/properties?category=Luxury+Homes" },
+    { label: "Commercial", href: "/properties?category=Commercial+Buildings" },
+    { label: "New Developments", href: "/properties?category=New+Developments" },
   ],
   Company: [
     { label: "About Us", href: "/about" },
-    { label: "Projects", href: "/projects" },
-    { label: "Process", href: "/process" },
+    { label: "All Properties", href: "/properties" },
     { label: "Contact", href: "/contact" },
   ],
-  Resources: [
-    { label: "Case Studies", href: "/projects" },
+  Support: [
     { label: "FAQ", href: "/contact" },
-    { label: "Documentation", href: "#" },
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms of Service", href: "#" },
   ],
 };
 
 const Footer = () => (
-  <footer className="gradient-navy text-primary-foreground">
+  <footer className="gradient-charcoal text-primary-foreground">
     <div className="section-padding py-16 md:py-20">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-md bg-accent flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent-foreground">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-              </svg>
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+              <Home size={18} className="text-primary-foreground" />
             </div>
-            <span className="font-heading font-bold text-lg">BuildSphere Suite</span>
+            <span className="font-heading font-bold text-xl">BuildSphere</span>
           </div>
-          <p className="text-primary-foreground/60 text-sm leading-relaxed max-w-xs">
-            Engineering intelligent digital infrastructure for modern real estate operations.
+          <p className="text-primary-foreground/50 text-sm leading-relaxed max-w-xs">
+            Premium real estate platform helping you find the perfect home to buy or rent in prime locations.
           </p>
         </div>
 
         {Object.entries(footerLinks).map(([title, links]) => (
           <div key={title}>
-            <h4 className="font-heading font-semibold text-sm uppercase tracking-wider mb-4 text-primary-foreground/80">
+            <h4 className="font-heading font-semibold text-sm uppercase tracking-wider mb-4 text-primary-foreground/70">
               {title}
             </h4>
             <ul className="space-y-3">
@@ -52,7 +47,7 @@ const Footer = () => (
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="text-sm text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                    className="text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -64,13 +59,12 @@ const Footer = () => (
       </div>
 
       <div className="mt-16 pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p className="text-xs text-primary-foreground/40">
-          © {new Date().getFullYear()} BuildSphere Suite. All rights reserved.
+        <p className="text-xs text-primary-foreground/30">
+          © {new Date().getFullYear()} BuildSphere. All rights reserved.
         </p>
-        <div className="flex gap-6 text-xs text-primary-foreground/40">
+        <div className="flex gap-6 text-xs text-primary-foreground/30">
           <span>Privacy Policy</span>
           <span>Terms of Service</span>
-          <span>Security</span>
         </div>
       </div>
     </div>

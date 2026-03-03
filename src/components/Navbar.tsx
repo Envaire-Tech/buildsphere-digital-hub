@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { label: "Solutions", href: "/solutions" },
-  { label: "Projects", href: "/projects" },
-  { label: "Process", href: "/process" },
+  { label: "Properties", href: "/properties" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -32,17 +30,12 @@ const Navbar = () => {
       }`}
     >
       <div className="section-padding flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-md gradient-navy flex items-center justify-center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary-foreground">
-              <rect x="3" y="3" width="7" height="7" />
-              <rect x="14" y="3" width="7" height="7" />
-              <rect x="3" y="14" width="7" height="7" />
-              <rect x="14" y="14" width="7" height="7" />
-            </svg>
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl gradient-emerald flex items-center justify-center">
+            <Home size={18} className="text-primary-foreground" />
           </div>
-          <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-            BuildSphere<span className="text-accent"> Suite</span>
+          <span className="font-heading font-bold text-xl tracking-tight text-foreground">
+            BuildSphere
           </span>
         </Link>
 
@@ -53,7 +46,7 @@ const Navbar = () => {
               to={item.href}
               className={`text-sm font-medium transition-colors duration-200 ${
                 location.pathname === item.href
-                  ? "text-accent"
+                  ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -63,8 +56,8 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="hero" size="default" asChild>
-            <Link to="/contact">Schedule Consultation</Link>
+          <Button variant="emerald" size="default" asChild>
+            <Link to="/contact">List Your Property</Link>
           </Button>
         </div>
 
@@ -91,16 +84,14 @@ const Navbar = () => {
                   key={item.href}
                   to={item.href}
                   className={`text-base font-medium py-2 ${
-                    location.pathname === item.href
-                      ? "text-accent"
-                      : "text-muted-foreground"
+                    location.pathname === item.href ? "text-primary" : "text-muted-foreground"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <Button variant="hero" size="lg" asChild className="mt-2">
-                <Link to="/contact">Schedule Consultation</Link>
+              <Button variant="emerald" size="lg" asChild className="mt-2">
+                <Link to="/contact">List Your Property</Link>
               </Button>
             </div>
           </motion.div>
