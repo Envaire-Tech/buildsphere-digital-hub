@@ -1,97 +1,175 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Search, MapPin } from "lucide-react";
-import heroImg from "@/assets/hero-property.jpg";
+import { Search, MapPin, ChevronRight, ChevronLeft, X } from "lucide-react";
+
+const slides = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+    title: "The Glass House",
+    subtitle: "Beverly Hills, CA",
+    price: "$4,500,000"
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+    title: "Modern Minimalist",
+    subtitle: "Austin, TX",
+    price: "$2,850,000"
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+    title: "Architectural Masterpiece",
+    subtitle: "Miami, FL",
+    price: "$8,200,000"
+  }
+];
 
 const Hero = () => {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"buy" | "rent">("buy");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const [location, setLocation] = useState("");
 
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (mode === "rent") params.set("status", "For Rent");
-    else params.set("status", "For Sale");
-    if (location) params.set("city", location);
-    navigate(`/properties?${params.toString()}`);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!searchExpanded) {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+      }
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [searchExpanded]);
+
+  const nextSlide = () => setCurrentSlide((p) => (p + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((p) => (p - 1 + slides.length) % slides.length);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (location) navigate(`/properties?city=${location}`);
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <img src={heroImg} alt="Luxury modern home" className="w-full h-full object-cover" loading="eager" />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-foreground/20" />
-      </div>
-
-      <div className="section-padding w-full pt-32 pb-20 md:pt-40 md:pb-28 relative z-10">
+    <section className="relative h-screen w-full overflow-hidden bg-background">
+      <AnimatePresence initial={false}>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="max-w-2xl"
+          key={currentSlide}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="absolute inset-0 z-0"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-[1.1] text-primary-foreground mb-5">
-            Find Your{" "}
-            <span className="text-gradient-gold">Perfect Home</span>
-          </h1>
-          <p className="text-lg text-primary-foreground/70 leading-relaxed max-w-xl mb-10">
-            Discover premium homes for sale and buildings for rent in prime locations.
-          </p>
-
-          {/* Search bar */}
-          <div className="bg-card/95 backdrop-blur-md rounded-2xl p-4 md:p-5 shadow-2xl border border-border/50">
-            {/* Buy / Rent toggle */}
-            <div className="flex gap-2 mb-4">
-              {(["buy", "rent"] as const).map((m) => (
-                <button
-                  key={m}
-                  onClick={() => setMode(m)}
-                  className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    mode === m
-                      ? "gradient-emerald text-primary-foreground shadow-sm"
-                      : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {m === "buy" ? "Buy" : "Rent"}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-3">
-              <div className="flex-1 relative">
-                <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="City, neighborhood, or address..."
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                />
-              </div>
-              <Button variant="emerald" size="lg" onClick={handleSearch} className="h-12 px-8">
-                <Search size={18} />
-                Search Properties
-              </Button>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-10 flex gap-10">
-            {[
-              { value: "200+", label: "Properties" },
-              { value: "50+", label: "Locations" },
-              { value: "1,000+", label: "Happy Clients" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="text-2xl font-heading font-bold text-primary-foreground">{s.value}</div>
-                <div className="text-xs text-primary-foreground/50 mt-0.5">{s.label}</div>
-              </div>
-            ))}
-          </div>
+          <motion.img
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 15, ease: "easeOut" }}
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-background/95" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/30 to-transparent" />
         </motion.div>
+      </AnimatePresence>
+
+      <div className="relative z-10 h-full flex flex-col justify-end pb-24 pt-40 px-6 md:px-12 lg:px-20 mx-auto max-w-[1800px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+          
+          {/* Main Title Area */}
+          <div className="lg:col-span-8">
+            <motion.div
+              key={`title-${currentSlide}`}
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.25, 1, 0.5, 1] }}
+            >
+              <h2 className="text-primary font-medium tracking-[0.2em] uppercase mb-6 text-sm md:text-base flex items-center gap-4">
+                <span className="w-12 h-[1px] bg-primary"></span>
+                {slides[currentSlide].subtitle}
+              </h2>
+              
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold text-foreground leading-[1.05] tracking-tighter mb-8">
+                {slides[currentSlide].title.split(' ').map((word, i) => (
+                  <span key={i} className={i % 2 !== 0 ? "font-light text-foreground/70 italic" : ""}>
+                    {word}{" "}
+                  </span>
+                ))}
+              </h1>
+              
+              <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-12">
+                <span className="text-3xl md:text-4xl font-light text-foreground tracking-tight border-b border-primary/30 pb-2">
+                  {slides[currentSlide].price}
+                </span>
+                <button 
+                  onClick={() => navigate('/properties')} 
+                  className="group flex items-center gap-3 text-sm font-medium tracking-widest uppercase text-foreground/80 hover:text-primary transition-colors mt-4 sm:mt-0"
+                >
+                  Explore Property 
+                  <span className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                    <ChevronRight size={16} />
+                  </span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Floating Search Controls */}
+          <div className="lg:col-span-4 flex flex-col items-start lg:items-end">
+            <motion.div 
+              className={`glass-card overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${searchExpanded ? 'w-full rounded-2xl p-8' : 'w-16 h-16 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/10'}`}
+              onClick={() => !searchExpanded && setSearchExpanded(true)}
+              layout
+            >
+              {!searchExpanded ? (
+                <Search size={24} className="text-foreground" />
+              ) : (
+                <motion.form 
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+                  onSubmit={handleSearch} className="flex flex-col gap-6"
+                >
+                  <div className="flex justify-between items-center mb-2 text-foreground/80 border-b border-white/10 pb-4">
+                    <h3 className="font-heading tracking-wide uppercase text-sm font-semibold">Find your space</h3>
+                    <button type="button" onClick={(e) => { e.stopPropagation(); setSearchExpanded(false); }} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                      <X size={18} />
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <MapPin size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
+                    <input
+                      autoFocus
+                      type="text"
+                      placeholder="City, neighborhood or address..."
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      className="w-full bg-background/40 hover:bg-background/60 border border-white/5 rounded-xl py-4 pl-12 pr-4 text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary/50 focus:bg-background/80 transition-all"
+                    />
+                  </div>
+                  <button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium tracking-wide uppercase text-sm py-4 rounded-xl transition-colors">
+                    Search Archive
+                  </button>
+                </motion.form>
+              )}
+            </motion.div>
+
+            {/* Slide Navigation */}
+            <div className="flex items-center gap-6 mt-16 w-full lg:justify-end">
+              <button onClick={prevSlide} className="p-4 rounded-full border border-white/10 hover:bg-white/5 text-foreground/70 hover:text-foreground transition-all backdrop-blur-md">
+                <ChevronLeft size={20} />
+              </button>
+              <div className="flex gap-3">
+                {slides.map((_, idx) => (
+                  <div key={idx} className={`h-[2px] transition-all duration-700 ease-out bg-white ${idx === currentSlide ? 'w-12 opacity-100' : 'w-4 opacity-30'}`} />
+                ))}
+              </div>
+              <button onClick={nextSlide} className="p-4 rounded-full border border-white/10 hover:bg-white/5 text-foreground/70 hover:text-foreground transition-all backdrop-blur-md">
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   );

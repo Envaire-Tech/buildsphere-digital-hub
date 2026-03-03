@@ -1,11 +1,10 @@
 import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
 import { properties, propertyCategories } from "@/data/properties";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, MapPin } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 
 const Properties = () => {
@@ -15,9 +14,9 @@ const Properties = () => {
 
   const [category, setCategory] = useState(initialCategory);
   const [search, setSearch] = useState(searchParams.get("city") || "");
-  const [priceRange, setPriceRange] = useState([0, 3000000]);
+  const [priceRange, setPriceRange] = useState([0, 10000000]);
   const [bedsMin, setBedsMin] = useState(0);
-  const [showFilters, setShowFilters] = useState(false);
+  const [mapView, setMapView] = useState(true);
 
   const filtered = useMemo(() => {
     return properties.filter((p) => {
@@ -31,109 +30,149 @@ const Properties = () => {
   }, [category, search, priceRange, bedsMin, initialStatus]);
 
   return (
-    <>
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      <main>
-        <section className="pt-28 pb-8 md:pt-32 md:pb-10 bg-muted/30">
-          <div className="section-padding">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <h1 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-2">Properties</h1>
-              <p className="text-muted-foreground mb-6">Browse our curated collection of premium properties.</p>
-
-              {/* Search & filter bar */}
-              <div className="flex flex-col md:flex-row gap-3 mb-6">
-                <div className="flex-1 relative">
-                  <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search by city, address, or name..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-full h-11 pl-10 pr-4 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                  />
+      
+      {/* Dynamic Fake Map Background */}
+      <div className={`fixed inset-0 z-0 transition-all duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)] ${mapView ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}>
+        <img 
+          src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+          alt="Map" 
+          className="w-full h-full object-cover opacity-20 mix-blend-luminosity grayscale"
+        />
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px]" />
+        
+        {/* Fake Map Pins */}
+        {mapView && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {filtered.map((p, i) => (
+              <motion.div
+                key={`pin-${p.id}`}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: "backOut" }}
+                className="absolute flex flex-col items-center"
+                style={{ 
+                   top: `${20 + (Math.random() * 60)}%`, 
+                   left: `${30 + (Math.random() * 60)}%` 
+                }}
+              >
+                <div className="bg-primary text-primary-foreground font-bold text-xs py-1 px-3 rounded-full shadow-lg shadow-primary/20 mb-1">
+                  {p.priceLabel}
                 </div>
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="flex items-center gap-2 h-11 px-5 rounded-xl bg-card border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors"
-                >
-                  <SlidersHorizontal size={16} />
-                  Filters
-                </button>
-              </div>
+                <div className="w-2 h-2 rounded-full bg-primary/80" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
 
-              {showFilters && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="p-5 rounded-xl bg-card border border-border mb-6 space-y-4"
-                >
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-2 block">
-                      Max Price: ${priceRange[1].toLocaleString()}
-                    </label>
-                    <Slider
-                      value={[priceRange[1]]}
-                      onValueChange={([v]) => setPriceRange([0, v])}
-                      max={3000000}
-                      step={50000}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-2 block">
-                      Min Bedrooms: {bedsMin}
-                    </label>
-                    <Slider value={[bedsMin]} onValueChange={([v]) => setBedsMin(v)} max={6} step={1} />
-                  </div>
-                </motion.div>
-              )}
+      <main className="flex-1 relative z-10 pt-28 pb-12 px-6 lg:px-12 w-full max-w-[1800px] mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 h-screen overflow-hidden">
+        
+        {/* Floating Filter Panel */}
+        <motion.div 
+          initial={{ x: -30, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+          className="w-full lg:w-[380px] flex-shrink-0 flex flex-col h-full z-20"
+        >
+          <div className="glass-card rounded-[2rem] p-8 h-full flex flex-col overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
+            <h2 className="text-3xl font-heading font-bold text-foreground mb-8 tracking-tighter">Directory.</h2>
+            
+            <div className="relative mb-8 group">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40 group-focus-within:text-primary transition-colors" />
+              <input
+                type="text"
+                placeholder="City or neighborhood..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-background/40 hover:bg-background/60 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-foreground placeholder-foreground/40 focus:outline-none focus:border-primary/50 transition-all font-medium"
+              />
+            </div>
 
-              {/* Category tabs */}
-              <div className="flex flex-wrap gap-2">
+            <div className="mb-10">
+              <h3 className="text-xs tracking-[0.2em] uppercase font-bold text-foreground/50 mb-4 ml-1">Collections</h3>
+              <div className="flex flex-col gap-2">
                 {propertyCategories.map((c) => (
                   <button
                     key={c}
                     onClick={() => setCategory(c)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    className={`text-left px-5 py-3.5 rounded-2xl text-sm font-semibold transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                       category === c
-                        ? "gradient-emerald text-primary-foreground shadow-sm"
-                        : "bg-card text-muted-foreground border border-border hover:text-foreground"
+                        ? "bg-foreground text-background shadow-xl scale-100"
+                        : "hover:bg-white/5 text-foreground/70 scale-[0.98] hover:scale-100 border border-transparent hover:border-white/5"
                     }`}
                   >
                     {c}
                   </button>
                 ))}
               </div>
-            </motion.div>
-          </div>
-        </section>
+            </div>
 
-        <section className="py-10 md:py-14">
-          <div className="section-padding">
-            <p className="text-sm text-muted-foreground mb-6">{filtered.length} properties found</p>
-            {filtered.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filtered.map((p, i) => (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <PropertyCard property={p} />
-                  </motion.div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-20 text-muted-foreground">
-                <p className="text-lg">No properties match your criteria.</p>
-                <p className="text-sm mt-2">Try adjusting your filters.</p>
-              </div>
+            <div className="mb-10">
+              <h3 className="text-xs tracking-[0.2em] uppercase font-bold text-foreground/50 mb-6 ml-1 flex justify-between items-center">
+                <span>Valuation Limit</span>
+                <span className="text-primary tracking-normal">${(priceRange[1] / 1000000).toFixed(1)}M</span>
+              </h3>
+              <Slider
+                value={[priceRange[1]]}
+                onValueChange={([v]) => setPriceRange([0, v])}
+                max={10000000}
+                step={250000}
+                className="py-2"
+              />
+            </div>
+
+            <div className="mt-auto pt-8 border-t border-white/5 flex justify-between items-center bg-transparent">
+              <span className="text-sm font-medium text-foreground/60">{filtered.length} Discoveries</span>
+              <button 
+                onClick={() => setMapView(!mapView)}
+                className="text-xs font-bold tracking-[0.1em] uppercase bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full text-primary transition-colors"
+              >
+                {mapView ? "Grid View" : "Map View"}
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Scrollable Properties List */}
+        <div className="flex-1 h-full overflow-y-auto pb-32 pr-2 lg:pr-6" style={{ scrollbarWidth: 'none' }}>
+          <div className={`grid gap-6 ${mapView ? 'grid-cols-1 xl:grid-cols-2 max-w-5xl ml-auto' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+            <AnimatePresence mode="popLayout">
+              {filtered.map((p, i) => (
+                <motion.div
+                  key={p.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                  transition={{ duration: 0.6, delay: i * 0.05, ease: [0.25, 1, 0.5, 1] }}
+                >
+                  <PropertyCard 
+                    property={p} 
+                    className="h-full flex flex-col glass-card border-none bg-card/40 hover:bg-card/60" 
+                    imageClassName={`${mapView ? 'aspect-video' : 'aspect-[4/3]'} rounded-t-2xl`} 
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            
+            {filtered.length === 0 && (
+              <motion.div 
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                className="col-span-full h-64 flex flex-col items-center justify-center text-center space-y-4"
+              >
+                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-2">
+                  <MapPin size={24} className="text-primary/50" />
+                </div>
+                <h3 className="text-xl font-heading font-bold text-foreground">No matches found</h3>
+                <p className="text-foreground/50 text-sm max-w-xs">We couldn't find any properties matching your exact criteria. Try adjusting the valuation limit or location.</p>
+              </motion.div>
             )}
           </div>
-        </section>
+        </div>
       </main>
-      <Footer />
-    </>
+    </div>
   );
 };
 

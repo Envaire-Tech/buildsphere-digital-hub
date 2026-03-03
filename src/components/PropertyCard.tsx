@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { Bed, Bath, Maximize, MapPin } from "lucide-react";
 import type { Property } from "@/data/properties";
 
-const PropertyCard = ({ property }: { property: Property }) => (
-  <Link to={`/property/${property.slug}`} className="block property-card group">
-    <div className="aspect-[4/3] overflow-hidden relative">
+const PropertyCard = ({ property, className, imageClassName }: { property: Property, className?: string, imageClassName?: string }) => (
+  <Link to={`/property/${property.slug}`} className={`block property-card group ${className || ''}`}>
+    <div className={`overflow-hidden relative ${imageClassName || 'aspect-[4/3]'}`}>
       <img
         src={property.images[0]}
         alt={property.title}
