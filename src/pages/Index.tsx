@@ -1,8 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import TrustBar from "@/components/TrustBar";
-import ServicePillars from "@/components/ServicePillars";
-import FeaturedProjects from "@/components/FeaturedProjects";
+import PropertyCategories from "@/components/PropertyCategories";
+import FeaturedListings from "@/components/FeaturedListings";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -11,9 +11,9 @@ const Index = () => (
     <Navbar />
     <main>
       <Hero />
-      <TrustBar />
-      <ServicePillars />
-      <FeaturedProjects />
+      <PropertyCategories />
+      <FeaturedListings />
+      <WhyChooseUs />
       <CTASection />
     </main>
     <Footer />

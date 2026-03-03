@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,43 +6,42 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 220 30% 12%;
+    --background: 30 20% 98%;
+    --foreground: 220 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 12%;
+    --card-foreground: 220 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 12%;
+    --popover-foreground: 220 25% 10%;
 
-    --primary: 220 55% 15%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 160 45% 22%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 25% 93%;
-    --secondary-foreground: 220 30% 12%;
+    --secondary: 30 15% 93%;
+    --secondary-foreground: 220 25% 10%;
 
-    --muted: 215 20% 95%;
-    --muted-foreground: 215 15% 48%;
+    --muted: 30 10% 95%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 210 65% 45%;
+    --accent: 160 45% 22%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 215 25% 90%;
-    --input: 215 25% 90%;
-    --ring: 210 65% 45%;
+    --border: 30 15% 90%;
+    --input: 30 15% 90%;
+    --ring: 160 45% 22%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --steel: 210 45% 55%;
-    --steel-foreground: 0 0% 100%;
-    --slate-dark: 220 20% 25%;
-    --navy: 220 55% 15%;
-    --navy-light: 220 45% 22%;
-    --blueprint: 210 80% 60%;
-    --blueprint-faint: 210 60% 96%;
+    --emerald: 160 45% 22%;
+    --emerald-light: 160 40% 35%;
+    --gold: 38 70% 55%;
+    --gold-light: 38 60% 70%;
+    --charcoal: 220 20% 15%;
+    --warm-gray: 30 10% 60%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -55,23 +54,23 @@
   }
 
   .dark {
-    --background: 220 30% 6%;
-    --foreground: 210 40% 95%;
-    --card: 220 30% 9%;
-    --card-foreground: 210 40% 95%;
-    --popover: 220 30% 9%;
-    --popover-foreground: 210 40% 95%;
-    --primary: 210 60% 55%;
-    --primary-foreground: 220 30% 6%;
-    --secondary: 220 25% 15%;
-    --secondary-foreground: 210 40% 95%;
-    --muted: 220 25% 15%;
-    --muted-foreground: 215 15% 55%;
-    --accent: 210 65% 50%;
+    --background: 220 20% 6%;
+    --foreground: 30 20% 95%;
+    --card: 220 20% 9%;
+    --card-foreground: 30 20% 95%;
+    --popover: 220 20% 9%;
+    --popover-foreground: 30 20% 95%;
+    --primary: 160 45% 40%;
+    --primary-foreground: 220 20% 6%;
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 30 20% 95%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 30 10% 55%;
+    --accent: 160 45% 40%;
     --accent-foreground: 0 0% 100%;
-    --border: 220 25% 18%;
-    --input: 220 25% 18%;
-    --ring: 210 65% 50%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 160 45% 40%;
   }
 }
 
@@ -91,36 +90,41 @@
 
 @layer components {
   .section-padding {
-    @apply px-6 md:px-12 lg:px-20 xl:px-28;
+    @apply px-6 md:px-12 lg:px-20 xl:px-28 max-w-[1400px] mx-auto;
   }
 
-  .blueprint-grid {
-    background-image:
-      linear-gradient(hsl(210 80% 60% / 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(210 80% 60% / 0.06) 1px, transparent 1px);
-    background-size: 40px 40px;
+  .gradient-emerald {
+    background: linear-gradient(135deg, hsl(160 45% 22%), hsl(160 40% 35%));
   }
 
-  .blueprint-border {
-    @apply border border-dashed;
-    border-color: hsl(210 80% 60% / 0.2);
+  .gradient-charcoal {
+    background: linear-gradient(135deg, hsl(220 20% 15%), hsl(220 15% 22%));
   }
 
-  .gradient-navy {
-    background: linear-gradient(135deg, hsl(220 55% 15%), hsl(220 45% 22%));
+  .gradient-gold {
+    background: linear-gradient(135deg, hsl(38 70% 55%), hsl(38 60% 65%));
   }
 
-  .gradient-steel {
-    background: linear-gradient(135deg, hsl(210 45% 55%), hsl(210 65% 45%));
-  }
-
-  .text-gradient-steel {
+  .text-gradient-emerald {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(210 65% 45%), hsl(210 45% 55%));
+    background-image: linear-gradient(135deg, hsl(160 45% 22%), hsl(160 40% 42%));
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(38 70% 55%), hsl(38 60% 45%));
   }
 
   .glass-card {
     @apply bg-card/80 backdrop-blur-md border border-border/50 shadow-lg;
+  }
+
+  .property-card {
+    @apply rounded-2xl overflow-hidden border border-border bg-card transition-all duration-300;
+  }
+  .property-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px -15px hsl(220 20% 15% / 0.12);
   }
 }
 
@@ -130,6 +134,6 @@
   }
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px -12px hsl(220 55% 15% / 0.15);
+    box-shadow: 0 12px 40px -12px hsl(220 20% 15% / 0.12);
   }
 }

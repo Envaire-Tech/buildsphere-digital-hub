@@ -2,31 +2,31 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
-import { Target, Eye, Lightbulb, Users } from "lucide-react";
+import { Target, Eye, Heart, Users } from "lucide-react";
 
 const values = [
-  { icon: Target, title: "Precision Engineering", text: "Every system is architected with structural discipline — mirroring the precision demanded by the built environment." },
-  { icon: Eye, title: "Operational Transparency", text: "Real-time visibility across every project phase, from foundation to handover, powered by live data synchronization." },
-  { icon: Lightbulb, title: "Innovation-Led Design", text: "We challenge convention through forward-thinking digital architecture that evolves with industry demands." },
-  { icon: Users, title: "Partnership Model", text: "Long-term strategic alliances with developers, builders, and property enterprises — not transactional vendor relationships." },
+  { icon: Target, title: "Trusted Expertise", text: "Over a decade of experience helping families and investors find the perfect property." },
+  { icon: Eye, title: "Total Transparency", text: "Honest pricing, verified listings, and clear communication at every step." },
+  { icon: Heart, title: "Client-First Approach", text: "Your dream home is our mission. We go the extra mile to make it happen." },
+  { icon: Users, title: "Local Knowledge", text: "Deep understanding of neighborhoods, market trends, and community amenities." },
 ];
 
 const About = () => (
   <>
     <Navbar />
     <main>
-      <section className="pt-32 pb-20 md:pt-40 md:pb-28 blueprint-grid">
+      <section className="pt-32 pb-20 md:pt-40 md:pb-28">
         <div className="section-padding">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
-            <span className="text-xs font-heading font-medium tracking-widest uppercase text-accent mb-3 block">About BuildSphere Suite</span>
+            <span className="text-xs font-body font-semibold tracking-widest uppercase text-primary mb-3 block">About BuildSphere</span>
             <h1 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6 leading-tight">
-              Bridging Construction Sites & Digital Intelligence
+              Helping You Find Home, Not Just a House
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              BuildSphere Suite was designed to bridge the operational gap between construction sites and digital intelligence systems. We specialize in scalable architecture, real-time synchronization, and performance-focused engineering.
+              BuildSphere is a premium real estate platform dedicated to connecting buyers, renters, and investors with exceptional properties in prime locations. We believe everyone deserves a place they can truly call home.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Our mission: to modernize property development through structured digital supervision, automation, and enterprise-level system design.
+              Our mission is to make the property journey simple, transparent, and rewarding — from first search to moving day.
             </p>
           </motion.div>
         </div>
@@ -34,7 +34,7 @@ const About = () => (
 
       <section className="py-20 bg-card">
         <div className="section-padding">
-          <h2 className="text-3xl font-heading font-bold text-foreground mb-12 text-center">Our Core Values</h2>
+          <h2 className="text-3xl font-heading font-bold text-foreground mb-12 text-center">Our Values</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {values.map((v, i) => (
               <motion.div
@@ -43,10 +43,10 @@ const About = () => (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex gap-4 p-6 rounded-xl border border-border bg-background"
+                className="flex gap-4 p-6 rounded-2xl border border-border bg-background"
               >
-                <div className="w-12 h-12 rounded-lg gradient-steel flex items-center justify-center shrink-0">
-                  <v.icon size={22} className="text-accent-foreground" />
+                <div className="w-12 h-12 rounded-xl gradient-emerald flex items-center justify-center shrink-0">
+                  <v.icon size={22} className="text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-foreground mb-2">{v.title}</h3>
