@@ -181,7 +181,7 @@ const PropertyDetail = () => {
               </div>
 
               {/* Specifications & Amenities */}
-              <div className="grid md:grid-cols-2 gap-16 mb-20">
+              <div className="grid md:grid-cols-2 gap-16 mb-24">
                 <div>
                   <h2 className="text-sm tracking-[0.2em] uppercase font-bold text-primary mb-8 flex items-center gap-4">
                     <span className="w-8 h-[1px] bg-primary"></span>
@@ -214,6 +214,32 @@ const PropertyDetail = () => {
                       </span>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              {/* 5. Locational Context (Map) */}
+              <div className="mb-20">
+                <h2 className="text-sm tracking-[0.2em] uppercase font-bold text-primary mb-8 flex items-center gap-4">
+                  <span className="w-8 h-[1px] bg-primary"></span>
+                  Locational Context
+                </h2>
+                <div className="relative w-full h-[400px] rounded-3xl overflow-hidden glass-card border-none">
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameBorder="0" 
+                    scrolling="no" 
+                    marginHeight={0} 
+                    marginWidth={0} 
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.address}, ${property.city}`)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                    className="w-full h-full grayscale-[100%] contrast-[1.1] opacity-60 hover:opacity-100 transition-opacity duration-700"
+                    title={`Map of ${property.title}`}
+                  ></iframe>
+                  {/* Decorative corner accents */}
+                  <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-primary/50 pointer-events-none"></div>
+                  <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-primary/50 pointer-events-none"></div>
+                  <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-primary/50 pointer-events-none"></div>
+                  <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-primary/50 pointer-events-none"></div>
                 </div>
               </div>
             </div>

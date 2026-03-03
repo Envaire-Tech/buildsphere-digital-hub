@@ -5,14 +5,21 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Mail, MapPin, Phone } from "lucide-react";
+import { Send, Mail, MapPin, Phone, CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Invalid email").max(255),
   phone: z.string().optional(),
+  date: z.date({
+    required_error: "A date is required.",
+  }).optional(),
   message: z.string().trim().min(1, "Message is required").max(2000),
 });
 
@@ -24,7 +31,7 @@ const faqs = [
 ];
 
 const Contact = () => {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "", date: undefined as Date | undefined });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -41,7 +48,7 @@ const Contact = () => {
     }
     setErrors({});
     toast.success("Thank you! We'll be in touch shortly.");
-    setForm({ name: "", email: "", phone: "", message: "" });
+    setForm({ name: "", email: "", phone: "", message: "", date: undefined });
   };
 
   return (
@@ -94,6 +101,32 @@ const Contact = () => {
                 <div>
                   <label className="text-xs font-medium text-foreground mb-1.5 block">Phone (optional)</label>
                   <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+1 (555) 000-0000" />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-foreground mb-1.5 block">Preferred Date (optional)</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal bg-background/50 hover:bg-background/80 border-border",
+                          !form.date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {form.date ? format(form.date, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={form.date}
+                        onSelect={(date) => setForm({ ...form, date })}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {errors.date && <p className="text-xs text-destructive mt-1">{errors.date}</p>}
                 </div>
                 <div>
                   <label className="text-xs font-medium text-foreground mb-1.5 block">Message</label>
